@@ -1,0 +1,531 @@
+/**
+ * Estilos principais da aplicação Kanban
+ * Reset, variáveis e estilos base
+ */
+
+/* =========================================
+   CSS RESET E VARIÁVEIS
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Fontes */
+    --fonte-principal: 'Segoe UI', 'Roboto', sans-serif;
+    --tamanho-fonte-base: 14px;
+    
+    /* Cores primárias */
+    --cor-primaria: #6c5ce7;
+    --cor-primaria-hover: #5a4cd1;
+    --cor-primaria-pressed: #4b3cbc;
+    
+    /* Prioridades */
+    --cor-p0: #e74c3c;
+    --cor-p1: #f39c12;
+    --cor-p2: #3498db;
+    --cor-p3: #27ae60;
+    
+    --cor-p0-suave: #f8d7da;
+    --cor-p1-suave: #fff3cd;
+    --cor-p2-suave: #d1ecf1;
+    --cor-p3-suave: #d4edda;
+    
+    /* Espaçamentos */
+    --espacamento-xs: 4px;
+    --espacamento-sm: 8px;
+    --espacamento-md: 16px;
+    --espacamento-lg: 24px;
+    --espacamento-xl: 32px;
+    
+    /* Bordas */
+    --borda-radius-sm: 4px;
+    --borda-radius-md: 8px;
+    --borda-radius-lg: 12px;
+    
+    /* Sombras */
+    --sombra-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --sombra-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --sombra-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
+    /* Transições */
+    --transicao-rapida: 150ms ease;
+    --transicao-media: 250ms ease;
+    --transicao-lenta: 400ms ease;
+}
+
+/* =========================================
+   ESTILOS BASE
+   ========================================= */
+
+html, body {
+    height: 100%;
+    font-family: var(--fonte-principal);
+    font-size: var(--tamanho-fonte-base);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    transition: background-color var(--transicao-media), color var(--transicao-media);
+}
+
+body.modal-aberto {
+    overflow: hidden;
+}
+
+/* =========================================
+   HEADER / BARRA DE FERRAMENTAS
+   ========================================= */
+
+.barra-ferramentas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.barra-esquerda,
+.barra-direita {
+    display: flex;
+    gap: var(--espacamento-sm);
+}
+
+/* =========================================
+   CONTEÚDO PRINCIPAL
+   ========================================= */
+
+.conteudo-principal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--espacamento-md);
+    overflow: hidden;
+}
+
+/* =========================================
+   NAVEGAÇÃO DE ABAS
+   ========================================= */
+
+.abas-navegacao {
+    display: flex;
+    margin-bottom: var(--espacamento-md);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.aba {
+    padding: var(--espacamento-sm) var(--espacamento-lg);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: var(--tamanho-fonte-base);
+    font-weight: 600;
+    border-top-left-radius: var(--borda-radius-md);
+    border-top-right-radius: var(--borda-radius-md);
+    transition: all var(--transicao-rapida);
+    position: relative;
+}
+
+.aba::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: background var(--transicao-rapida);
+}
+
+.aba.ativa::after {
+    background: var(--cor-primaria);
+}
+
+.aba.ativa {
+    background: var(--cor-primaria);
+    color: #ffffff;
+}
+
+/* =========================================
+   CONTEÚDO DAS ABAS
+   ========================================= */
+
+.conteudo-aba {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+}
+
+.conteudo-aba.ativo {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   QUADRO KANBAN
+   ========================================= */
+
+.quadro-kanban {
+    display: flex;
+    gap: var(--espacamento-md);
+    flex: 1;
+    overflow-x: auto;
+    padding-bottom: var(--espacamento-md);
+}
+
+.coluna-dia {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--borda-radius-lg);
+    padding: var(--espacamento-md);
+    transition: transform var(--transicao-rapida);
+}
+
+.coluna-dia:hover {
+    transform: translateY(-2px);
+}
+
+.cabecalho-dia {
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    border-radius: var(--borda-radius-md);
+    margin-bottom: var(--espacamento-md);
+    background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-hover));
+    color: #ffffff;
+}
+
+.secao-status {
+    margin-bottom: var(--espacamento-md);
+}
+
+.rotulo-status {
+    font-weight: 600;
+    margin-bottom: var(--espacamento-xs);
+    padding: var(--espacamento-xs) 0;
+}
+
+.lista-tarefas {
+    list-style: none;
+    min-height: 80px;
+    padding: var(--espacamento-sm);
+    border-radius: var(--borda-radius-md);
+    transition: background var(--transicao-rapida);
+}
+
+.lista-tarefas.drag-over {
+    background: rgba(108, 92, 231, 0.2);
+}
+
+.item-tarefa {
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    margin-bottom: var(--espacamento-xs);
+    border-radius: var(--borda-radius-sm);
+    cursor: grab;
+    font-weight: 500;
+    transition: all var(--transicao-rapida);
+    box-shadow: var(--sombra-sm);
+}
+
+.item-tarefa:hover {
+    transform: scale(1.02);
+    box-shadow: var(--sombra-md);
+}
+
+.item-tarefa.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.item-tarefa.tarefa-feita {
+    opacity: 0.7;
+}
+
+/* =========================================
+   AGENDA
+   ========================================= */
+
+.agenda-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--espacamento-md);
+    flex-wrap: wrap;
+    gap: var(--espacamento-sm);
+}
+
+.toolbar-esquerda,
+.toolbar-direita {
+    display: flex;
+    gap: var(--espacamento-sm);
+}
+
+.navegacao-semanas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacamento-md);
+    margin-bottom: var(--espacamento-md);
+    flex-wrap: wrap;
+}
+
+.label-semana {
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 250px;
+    text-align: center;
+}
+
+.btn-nav {
+    padding: var(--espacamento-xs) var(--espacamento-md);
+    border-radius: var(--borda-radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transicao-rapida);
+}
+
+.btn-hoje {
+    margin-left: var(--espacamento-sm);
+}
+
+.tabela-container {
+    flex: 1;
+    overflow: auto;
+    border-radius: var(--borda-radius-md);
+}
+
+.tabela-horarios {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.tabela-horarios th,
+.tabela-horarios td {
+    padding: var(--espacamento-sm);
+    text-align: center;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.tabela-horarios thead th {
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabela-horarios thead th.dia-atual {
+    background: var(--cor-primaria) !important;
+    color: #ffffff;
+}
+
+.celula-horario {
+    font-weight: 600;
+    width: 80px;
+    cursor: context-menu;
+}
+
+.celula-atividade {
+    cursor: pointer;
+    transition: all var(--transicao-rapida);
+    min-height: 40px;
+}
+
+.celula-atividade:hover {
+    filter: brightness(0.95);
+}
+
+/* =========================================
+   TOAST CONTAINER
+   ========================================= */
+
+#toast-container {
+    position: fixed;
+    bottom: var(--espacamento-lg);
+    right: var(--espacamento-lg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--espacamento-sm);
+}
+
+/* =========================================
+   MENU DE CONTEXTO
+   ========================================= */
+
+.menu-contexto {
+    position: fixed;
+    z-index: 1000;
+    min-width: 160px;
+    border-radius: var(--borda-radius-md);
+    box-shadow: var(--sombra-lg);
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    transition: all var(--transicao-rapida);
+}
+
+.menu-contexto.visivel {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.menu-lista {
+    list-style: none;
+    padding: var(--espacamento-xs) 0;
+}
+
+.menu-item {
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    cursor: pointer;
+    transition: background var(--transicao-rapida);
+}
+
+.menu-separador {
+    height: 1px;
+    margin: var(--espacamento-xs) 0;
+    background: rgba(128, 128, 128, 0.3);
+}
+
+/* =========================================
+   CALENDÁRIO MENSAL
+   ========================================= */
+
+.calendario-navegacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacamento-md);
+    margin-bottom: var(--espacamento-md);
+}
+
+.label-mes {
+    font-weight: 700;
+    font-size: 18px;
+    min-width: 180px;
+    text-align: center;
+}
+
+.calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: var(--espacamento-md);
+}
+
+.calendario-dia-semana {
+    text-align: center;
+    font-weight: 600;
+    padding: var(--espacamento-sm);
+    font-size: 12px;
+}
+
+.calendario-dia {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--borda-radius-sm);
+    cursor: pointer;
+    transition: all var(--transicao-rapida);
+    font-size: 14px;
+}
+
+.calendario-dia:hover:not(.vazio) {
+    transform: scale(1.1);
+}
+
+.calendario-dia.vazio {
+    cursor: default;
+}
+
+.calendario-dia.hoje {
+    border: 2px solid var(--cor-primaria);
+}
+
+.calendario-dia.fim-de-semana {
+    opacity: 0.5;
+}
+
+.legenda-prioridades {
+    display: flex;
+    align-items: center;
+    gap: var(--espacamento-md);
+    margin-bottom: var(--espacamento-md);
+    justify-content: center;
+}
+
+.legenda-titulo {
+    font-weight: 600;
+}
+
+.legenda-item {
+    font-weight: 700;
+    padding: var(--espacamento-xs) var(--espacamento-sm);
+    border-radius: var(--borda-radius-sm);
+}
+
+.legenda-item.p0 { color: var(--cor-p0); }
+.legenda-item.p1 { color: var(--cor-p1); }
+.legenda-item.p2 { color: var(--cor-p2); }
+.legenda-item.p3 { color: var(--cor-p3); }
+
+.atividades-dia {
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
+    padding-top: var(--espacamento-md);
+}
+
+.atividades-dia h4 {
+    margin-bottom: var(--espacamento-sm);
+}
+
+.lista-atividades {
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.lista-atividades li {
+    padding: var(--espacamento-xs) 0;
+    font-weight: 500;
+}
+
+.lista-atividades .sem-atividades {
+    color: rgba(128, 128, 128, 0.7);
+    font-style: italic;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
+@media (max-width: 768px) {
+    .quadro-kanban {
+        flex-direction: column;
+    }
+    
+    .coluna-dia {
+        min-width: 100%;
+    }
+    
+    .agenda-toolbar {
+        flex-direction: column;
+    }
+    
+    .navegacao-semanas {
+        flex-direction: column;
+    }
+    
+    .label-semana {
+        min-width: auto;
+    }
+}

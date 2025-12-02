@@ -1,0 +1,350 @@
+/**
+ * Estilos de componentes reutilizáveis
+ * Botões, Modais, Inputs, etc.
+ */
+
+/* =========================================
+   ÍCONES SVG
+   ========================================= */
+
+.icone-svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* Tema escuro - ícones em branco */
+.tema-escuro .icone-svg {
+    filter: invert(1);
+}
+
+/* Tema claro - ícones escuros (padrão do SVG) */
+.tema-claro .icone-svg {
+    filter: none;
+}
+
+/* Ícones em botões primários sempre em branco */
+.btn-primario .icone-svg {
+    filter: invert(1);
+}
+
+/* =========================================
+   BOTÕES
+   ========================================= */
+
+.btn-primario,
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacamento-sm);
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    border: none;
+    border-radius: var(--borda-radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--tamanho-fonte-base);
+    font-family: inherit;
+    transition: all var(--transicao-rapida);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primario {
+    background-color: var(--cor-primaria);
+    color: #ffffff;
+}
+
+.btn-primario:hover {
+    background-color: var(--cor-primaria-hover);
+}
+
+.btn-primario:active {
+    background-color: var(--cor-primaria-pressed);
+}
+
+.btn-primario:disabled,
+.btn-secundario:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-fechar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity var(--transicao-rapida);
+}
+
+.btn-fechar:hover {
+    opacity: 1;
+}
+
+.icone {
+    font-size: 16px;
+}
+
+/* =========================================
+   MODAIS
+   ========================================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transicao-media);
+}
+
+.modal-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    border-radius: var(--borda-radius-lg);
+    box-shadow: var(--sombra-lg);
+    transform: scale(0.9);
+    transition: transform var(--transicao-media);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.modal-overlay.ativo .modal {
+    transform: scale(1);
+}
+
+.dialogo {
+    width: 400px;
+}
+
+.dialogo-grande {
+    width: 450px;
+}
+
+.dialogo-pequeno {
+    width: 350px;
+}
+
+.dialogo-calendario {
+    width: 700px;
+    max-width: 90vw;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--espacamento-md);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--cor-primaria);
+}
+
+.modal-body {
+    padding: var(--espacamento-md);
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--espacamento-sm);
+    padding: var(--espacamento-md);
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* =========================================
+   INPUTS E CAMPOS
+   ========================================= */
+
+.campo {
+    margin-bottom: var(--espacamento-md);
+}
+
+.campo label {
+    display: block;
+    margin-bottom: var(--espacamento-xs);
+    font-weight: 600;
+}
+
+.input-texto,
+.select-campo {
+    width: 100%;
+    padding: var(--espacamento-sm) var(--espacamento-md);
+    border-radius: var(--borda-radius-md);
+    font-size: var(--tamanho-fonte-base);
+    font-family: inherit;
+    transition: border-color var(--transicao-rapida);
+}
+
+.input-texto:focus,
+.input-numero:focus,
+.select-campo:focus {
+    outline: none;
+    border-width: 2px;
+}
+
+.input-numero {
+    width: 80px;
+    padding: var(--espacamento-sm);
+    border-radius: var(--borda-radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    font-family: inherit;
+}
+
+.campo-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espacamento-xs);
+}
+
+.grupo-inputs-horario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--espacamento-md);
+    margin: var(--espacamento-md) 0;
+}
+
+.grupo-inputs-horario.inline {
+    justify-content: flex-start;
+}
+
+.linha-separadora {
+    height: 1px;
+    background: rgba(128, 128, 128, 0.3);
+    margin: var(--espacamento-sm) 0;
+}
+
+/* =========================================
+   PRÉVIA DE HORÁRIO
+   ========================================= */
+
+.previa-container {
+    text-align: center;
+    margin-top: var(--espacamento-md);
+}
+
+.previa-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--espacamento-xs);
+    color: #a29bfe;
+}
+
+.previa-horario {
+    font-size: 18px;
+    font-weight: 700;
+    padding: var(--espacamento-md);
+    border-radius: var(--borda-radius-md);
+    text-align: center;
+}
+
+/* =========================================
+   TOAST / NOTIFICAÇÕES
+   ========================================= */
+
+.toast {
+    padding: var(--espacamento-sm) var(--espacamento-lg);
+    border-radius: var(--borda-radius-md);
+    font-weight: 600;
+    box-shadow: var(--sombra-lg);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all var(--transicao-media);
+}
+
+.toast-visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-hiding {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.toast-info {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+}
+
+.toast-sucesso {
+    background: #27ae60;
+    color: white;
+}
+
+.toast-erro {
+    background: #e74c3c;
+    color: white;
+}
+
+.toast-aviso {
+    background: #f39c12;
+    color: white;
+}
+
+/* =========================================
+   EFEITO RIPPLE
+   ========================================= */
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple-animation 0.4s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* =========================================
+   TOOLTIPS (via atributo title nativo)
+   ========================================= */
+
+[title] {
+    position: relative;
+}
+
+/* =========================================
+   ESTADOS DE FOCO
+   ========================================= */
+
+:focus-visible {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
+/* =========================================
+   SELEÇÃO DE TEXTO
+   ========================================= */
+
+::selection {
+    background: var(--cor-primaria);
+    color: white;
+}

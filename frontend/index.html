@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Kanban</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/temas.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/animacoes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="tema-escuro">
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Header / Toolbar -->
+    <header class="barra-ferramentas">
+        <div class="barra-esquerda">
+            <button class="btn-primario" id="btn-nova-tarefa">
+                <img src="icons/plus.svg" alt="" class="icone-svg">
+                Nova Tarefa
+            </button>
+            <button class="btn-secundario" id="btn-atualizar">
+                <img src="icons/refresh.svg" alt="" class="icone-svg">
+                Atualizar
+            </button>
+        </div>
+        <div class="barra-direita">
+            <button class="btn-secundario" id="btn-tema">
+                <img src="icons/moon.svg" alt="" class="icone-svg" id="icone-tema">
+                <span id="texto-tema">Modo Claro</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content with Tabs -->
+    <main class="conteudo-principal">
+        <!-- Tab Navigation -->
+        <nav class="abas-navegacao">
+            <button class="aba ativa" data-aba="kanban">
+                <img src="icons/kanban.svg" alt="" class="icone-svg">
+                Kanban
+            </button>
+            <button class="aba" data-aba="agenda">
+                <img src="icons/agenda.svg" alt="" class="icone-svg">
+                Agenda Semanal
+            </button>
+        </nav>
+
+        <!-- Tab Content: Kanban -->
+        <section id="aba-kanban" class="conteudo-aba ativo">
+            <div class="quadro-kanban" id="quadro-kanban">
+                <!-- Colunas serão inseridas dinamicamente -->
+            </div>
+        </section>
+
+        <!-- Tab Content: Agenda -->
+        <section id="aba-agenda" class="conteudo-aba">
+            <!-- Toolbar da Agenda -->
+            <div class="agenda-toolbar">
+                <div class="toolbar-esquerda">
+                    <button class="btn-primario" id="btn-incluir-atividade">
+                        <img src="icons/plus.svg" alt="" class="icone-svg">
+                        Incluir Atividade
+                    </button>
+                    <button class="btn-secundario" id="btn-adicionar-horario">
+                        <img src="icons/clock.svg" alt="" class="icone-svg">
+                        Adicionar Horário
+                    </button>
+                    <button class="btn-primario" id="btn-sincronizar-kanban">
+                        <img src="icons/refresh.svg" alt="" class="icone-svg">
+                        Sincronizar Kanban
+                    </button>
+                </div>
+                <div class="toolbar-direita">
+                    <button class="btn-secundario" id="btn-calendario-mensal">
+                        <img src="icons/calendar.svg" alt="" class="icone-svg">
+                        Calendário Mensal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navegação de Semanas -->
+            <div class="navegacao-semanas">
+                <button class="btn-nav" id="btn-semana-anterior">
+                    <img src="icons/arrow-left.svg" alt="" class="icone-svg">
+                    Anterior
+                </button>
+                <span class="label-semana" id="label-semana">Semana Atual</span>
+                <button class="btn-nav" id="btn-proxima-semana">
+                    Próxima
+                    <img src="icons/arrow-right.svg" alt="" class="icone-svg">
+                </button>
+                <button class="btn-nav btn-hoje" id="btn-hoje">Hoje</button>
+            </div>
+
+            <!-- Tabela de Horários -->
+            <div class="tabela-container">
+                <table class="tabela-horarios" id="tabela-horarios">
+                    <thead>
+                        <tr id="header-dias">
+                            <th class="coluna-horario">Horário</th>
+                            <!-- Headers dos dias serão inseridos dinamicamente -->
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabela">
+                        <!-- Linhas serão inseridas dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Nova Tarefa -->
+    <div class="modal-overlay" id="modal-tarefa">
+        <div class="modal dialogo">
+            <div class="modal-header">
+                <h2>Nova Tarefa</h2>
+                <button class="btn-fechar" data-fechar>
+                    <img src="icons/close.svg" alt="Fechar" class="icone-svg">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="campo">
+                    <label for="input-titulo-tarefa">Descrição:</label>
+                    <input type="text" id="input-titulo-tarefa" placeholder="Título da tarefa..." class="input-texto">
+                </div>
+                <div class="campo">
+                    <label for="select-dia-tarefa">Dia:</label>
+                    <select id="select-dia-tarefa" class="select-campo">
+                        <option value="Segunda-Feira">Segunda-Feira</option>
+                        <option value="Terça-Feira">Terça-Feira</option>
+                        <option value="Quarta-Feira">Quarta-Feira</option>
+                        <option value="Quinta-Feira">Quinta-Feira</option>
+                        <option value="Sexta-Feira">Sexta-Feira</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" data-fechar>Cancelar</button>
+                <button class="btn-primario" id="btn-salvar-tarefa">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Adicionar Horário -->
+    <div class="modal-overlay" id="modal-horario">
+        <div class="modal dialogo">
+            <div class="modal-header">
+                <h2>Configurar Horário</h2>
+                <button class="btn-fechar" data-fechar>
+                    <img src="icons/close.svg" alt="Fechar" class="icone-svg">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="linha-separadora"></div>
+                <div class="grupo-inputs-horario">
+                    <div class="campo-inline">
+                        <label>Hora:</label>
+                        <input type="number" id="input-hora" min="0" max="23" value="9" class="input-numero">
+                        <span>h</span>
+                    </div>
+                    <div class="campo-inline">
+                        <label>Minuto:</label>
+                        <input type="number" id="input-minuto" min="0" max="59" value="0" class="input-numero">
+                        <span>min</span>
+                    </div>
+                </div>
+                <div class="previa-container">
+                    <label>Prévia</label>
+                    <div class="previa-horario" id="previa-horario">09:00 horas</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" data-fechar>Cancelar</button>
+                <button class="btn-primario" id="btn-salvar-horario">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Incluir/Editar Atividade -->
+    <div class="modal-overlay" id="modal-atividade">
+        <div class="modal dialogo dialogo-grande">
+            <div class="modal-header">
+                <h2 id="titulo-modal-atividade">Nova Atividade</h2>
+                <button class="btn-fechar" data-fechar>
+                    <img src="icons/close.svg" alt="Fechar" class="icone-svg">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="campo">
+                    <label for="input-titulo-atividade">Título:</label>
+                    <input type="text" id="input-titulo-atividade" placeholder="Descrição da atividade..." class="input-texto">
+                </div>
+                <div class="campo">
+                    <label for="select-dia-atividade">Dia da Semana:</label>
+                    <select id="select-dia-atividade" class="select-campo">
+                        <option value="Segunda-Feira">Segunda-Feira</option>
+                        <option value="Terça-Feira">Terça-Feira</option>
+                        <option value="Quarta-Feira">Quarta-Feira</option>
+                        <option value="Quinta-Feira">Quinta-Feira</option>
+                        <option value="Sexta-Feira">Sexta-Feira</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label>Horário:</label>
+                    <div class="grupo-inputs-horario inline">
+                        <input type="number" id="input-hora-atividade" min="0" max="23" value="9" class="input-numero">
+                        <span>:</span>
+                        <input type="number" id="input-minuto-atividade" min="0" max="59" value="0" class="input-numero">
+                    </div>
+                </div>
+                <div class="campo">
+                    <label for="select-prioridade">Prioridade:</label>
+                    <select id="select-prioridade" class="select-campo">
+                        <option value="0">P0 - Crítica</option>
+                        <option value="1">P1 - Alta</option>
+                        <option value="2">P2 - Média</option>
+                        <option value="3" selected>P3 - Baixa</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="select-periodicidade">Periodicidade:</label>
+                    <select id="select-periodicidade" class="select-campo">
+                        <option value="unica">Única vez</option>
+                        <option value="diaria">Diária</option>
+                        <option value="semanal" selected>Semanal</option>
+                        <option value="quinzenal">Quinzenal</option>
+                        <option value="mensal">Mensal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" data-fechar>Cancelar</button>
+                <button class="btn-primario" id="btn-salvar-atividade">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Calendário Mensal -->
+    <div class="modal-overlay" id="modal-calendario">
+        <div class="modal dialogo dialogo-calendario">
+            <div class="modal-header">
+                <h2>Calendário Mensal</h2>
+                <button class="btn-fechar" data-fechar>
+                    <img src="icons/close.svg" alt="Fechar" class="icone-svg">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="calendario-navegacao">
+                    <button class="btn-nav" id="btn-mes-anterior">
+                        <img src="icons/arrow-left.svg" alt="" class="icone-svg">
+                    </button>
+                    <span class="label-mes" id="label-mes">Dezembro 2025</span>
+                    <button class="btn-nav" id="btn-proximo-mes">
+                        <img src="icons/arrow-right.svg" alt="" class="icone-svg">
+                    </button>
+                </div>
+                <div class="calendario-grid" id="calendario-grid">
+                    <!-- Calendário será gerado dinamicamente -->
+                </div>
+                <div class="legenda-prioridades">
+                    <span class="legenda-titulo">Legenda:</span>
+                    <span class="legenda-item p0">P0</span>
+                    <span class="legenda-item p1">P1</span>
+                    <span class="legenda-item p2">P2</span>
+                    <span class="legenda-item p3">P3</span>
+                </div>
+                <div class="atividades-dia">
+                    <h4 id="label-data-selecionada">Selecione uma data para ver as atividades</h4>
+                    <ul class="lista-atividades" id="lista-atividades-dia">
+                        <!-- Atividades do dia selecionado -->
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" data-fechar>Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Confirmação de Exclusão -->
+    <div class="modal-overlay" id="modal-confirmar">
+        <div class="modal dialogo dialogo-pequeno">
+            <div class="modal-header">
+                <h2>Confirmar</h2>
+            </div>
+            <div class="modal-body">
+                <p id="texto-confirmacao">Tem certeza?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" id="btn-confirmar-nao">Não</button>
+                <button class="btn-primario" id="btn-confirmar-sim">Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="menu-contexto" id="menu-contexto">
+        <ul class="menu-lista">
+            <!-- Itens do menu serão inseridos dinamicamente -->
+        </ul>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/constantes.js"></script>
+    <script src="js/dominio.js"></script>
+    <script src="js/persistencia.js"></script>
+    <script src="js/servicos.js"></script>
+    <script src="js/animacoes.js"></script>
+    <script src="js/componentes.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
